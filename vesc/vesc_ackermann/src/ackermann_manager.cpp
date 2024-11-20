@@ -24,8 +24,13 @@ AckermannManager::AckermannManager(const rclcpp::NodeOptions & options)
 
 void AckermannManager::initialize_parameters()
 {
-    max_speed_ = declare_parameter<double>("max_speed", 1.0);
-    max_steering_angle_ = declare_parameter<double>("max_steering_angle", 0.5);
+    // Declare parameters with default values
+    declare_parameter<double>("max_speed", 1.0);
+    declare_parameter<double>("max_steering_angle", 0.5);
+
+    // Retrieve parameter values
+    this->get_parameter("max_speed", max_speed_);
+    this->get_parameter("max_steering_angle", max_steering_angle_);
 }
 
 void AckermannManager::setup_subscriptions()
