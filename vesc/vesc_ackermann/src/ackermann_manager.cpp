@@ -39,24 +39,24 @@ void AckermannManager::setup_subscriptions()
         "/joy", 10, std::bind(&AckermannManager::joy_callback, this, std::placeholders::_1));
 
     ackermann_main_sub_ = this->create_subscription<ackermann_msgs::msg::AckermannDriveStamped>(
-        "/ackermann_cmd_main", 10, std::bind(&AckermannManager::ackermann_main_callback, this, std::placeholders::_1));
+        "ackermann_cmd_main", 10, std::bind(&AckermannManager::ackermann_main_callback, this, std::placeholders::_1));
 
     ackermann_a_sub_ = this->create_subscription<ackermann_msgs::msg::AckermannDriveStamped>(
-        "/ackermann_cmd_a", 10, std::bind(&AckermannManager::ackermann_a_callback, this, std::placeholders::_1));
+        "ackermann_cmd_a", 10, std::bind(&AckermannManager::ackermann_a_callback, this, std::placeholders::_1));
 
     ackermann_b_sub_ = this->create_subscription<ackermann_msgs::msg::AckermannDriveStamped>(
-        "/ackermann_cmd_b", 10, std::bind(&AckermannManager::ackermann_b_callback, this, std::placeholders::_1));
+        "ackermann_cmd_b", 10, std::bind(&AckermannManager::ackermann_b_callback, this, std::placeholders::_1));
 
     ackermann_x_sub_ = this->create_subscription<ackermann_msgs::msg::AckermannDriveStamped>(
-        "/ackermann_cmd_x", 10, std::bind(&AckermannManager::ackermann_x_callback, this, std::placeholders::_1));
+        "ackermann_cmd_x", 10, std::bind(&AckermannManager::ackermann_x_callback, this, std::placeholders::_1));
 
     ackermann_y_sub_ = this->create_subscription<ackermann_msgs::msg::AckermannDriveStamped>(
-        "/ackermann_cmd_y", 10, std::bind(&AckermannManager::ackermann_y_callback, this, std::placeholders::_1));
+        "ackermann_cmd_y", 10, std::bind(&AckermannManager::ackermann_y_callback, this, std::placeholders::_1));
 }
 
 void AckermannManager::setup_publisher()
 {
-    ackermann_pub_ = this->create_publisher<ackermann_msgs::msg::AckermannDriveStamped>("/ackermann_cmd", 10);
+    ackermann_pub_ = this->create_publisher<ackermann_msgs::msg::AckermannDriveStamped>("ackermann_cmd", 10);
 }
 
 void AckermannManager::joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg)
@@ -71,7 +71,7 @@ void AckermannManager::joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg)
     else if (msg->buttons[2] && init_ackermann_x_) current_mode_ = Mode::X;
     else if (msg->buttons[3] && init_ackermann_y_) current_mode_ = Mode::Y;
 
-    if (current_mode_ == Mode::JOY) {
+    if (current_mode_ == Mode::JOY && msg->buttons[4]) {
         auto ackermann_msg = ackermann_msgs::msg::AckermannDriveStamped();
         ackermann_msg.header.stamp = this->now();
 

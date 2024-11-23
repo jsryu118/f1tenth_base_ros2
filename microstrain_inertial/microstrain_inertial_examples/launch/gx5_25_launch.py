@@ -13,6 +13,8 @@ _GX5_25_PARAMS_FILE = os.path.join(ament_index_python.packages.get_package_share
 _RVIZ_DISPLAY_FILE = os.path.join(ament_index_python.packages.get_package_share_directory('microstrain_inertial_examples'), 'config', 'gx5_25', 'display.rviz')
 
 def generate_launch_description():
+  car_name = os.getenv('F1TENTH_CAR_NAME', 'f1tenth')  # 기본값은 'f1tenth'
+
   return LaunchDescription([
     # Microstrain node
     IncludeLaunchDescription(
@@ -39,14 +41,14 @@ def generate_launch_description():
 
     # Publish a static transform for where the GX5-25 is mounted on base_link.
     # Unless the GX5-25 is mounted exactly at base_link, you should change this to be accurate to your setup
-    Node(
-      package='tf2_ros',
-      executable='static_transform_publisher',
-      output='screen',
-      arguments=[
-          "0", "0", "0", "0", "0", "0", "base_link", "gx5_25_link"
-      ]
-    ),
+    # Node(
+    #   package='tf2_ros',
+    #   executable='static_transform_publisher',
+    #   output='screen',
+    #   arguments=[
+    #       "0", "0", "0", "0", "0", "0", "base_link", "gx5_25_link"
+    #   ]
+    # ),
 
     # # Run rviz to view the state of the application
     # Node(

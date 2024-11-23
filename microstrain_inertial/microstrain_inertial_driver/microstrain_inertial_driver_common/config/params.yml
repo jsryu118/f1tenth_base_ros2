@@ -113,7 +113,7 @@ target_frame_id : "base_link"
 # Static transform between mount_frame_id and frame_id.
 # Note: It is recommended to define this in a urdf file if you are building a robot, or are able to modify the robot's description.
 publish_mount_to_frame_id_transform  : True
-mount_to_frame_id_transform          : [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0] # [ x, y, z, qi, qj, qk, qw ]
+mount_to_frame_id_transform          : [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0] # [ x, y, z, qi, qj, qk, qw ]
 
 # Controls if the driver outputs data with-respect-to ENU frame
 #     false - position, velocity, and orientation are WRT the NED frame (native device frame)
