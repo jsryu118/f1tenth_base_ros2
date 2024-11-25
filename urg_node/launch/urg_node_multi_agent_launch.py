@@ -50,7 +50,11 @@ def generate_launch_description():
         executable='urg_node_driver',
         output='screen',
         namespace=car_name_namespace,  # Apply namespace
-        parameters=[LaunchConfiguration('param')]
+        parameters=[LaunchConfiguration('param'),
+                    {
+                    'laser_frame_id': f'laser_{car_name}',  # Append car_name to frame_id
+                    }
+                    ]
     )
     launch_description.add_action(hokuyo_node)
 

@@ -1,4 +1,4 @@
-port: "/dev/ttyACM1"
+port: "/dev/ttyACM0"
 brake_max: 200000.0
 brake_min: -20000.0
 current_max: 100.0

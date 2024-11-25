@@ -9,7 +9,6 @@ import yaml
 def generate_launch_description():
     # 공통 설정 파일
     package_dir = get_package_share_directory('vesc_ackermann')
-
     ackermann_manage_config = os.path.join(package_dir, 'config', 'ackermann_manage.yaml')
     shared_config = os.path.join(package_dir, 'config', 'shared.yaml')
     vesc_odom_config = os.path.join(package_dir, 'config', 'vesc_odom.yaml')
