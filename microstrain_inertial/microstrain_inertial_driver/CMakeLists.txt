@@ -143,7 +143,13 @@ find_package(GeographicLib REQUIRED)
 string(REGEX REPLACE "[.]so[^\\/\\s]*$" ".a" GeographicLib_LIBRARIES ${GeographicLib_LIBRARIES})
 
 # Manually specify the path to the static library
-set(GEOGRAPHIC_STATIC_LIB "/usr/lib/aarch64-linux-gnu/libGeographic.a")
+find_library(GEOGRAPHIC_STATIC_LIB 
+  NAMES "libGeographic.a"
+  PATHS 
+    "/usr/lib"
+    "/usr/lib/aarch64-linux-gnu"
+    "/usr/lib/x86_64-linux-gnu"
+)
 
 # Check if the static library exists
 if (EXISTS ${GEOGRAPHIC_STATIC_LIB})
