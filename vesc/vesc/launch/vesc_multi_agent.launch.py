@@ -21,7 +21,7 @@ def generate_launch_description():
     )
 
     # 네임스페이스를 환경 변수에서 가져오기
-    car_name = os.getenv('F1TENTH_CAR_NAME', 'f1tenth')  # 기본값은 'f1tenth'
+    car_name = os.getenv('F1TENTH_CAR_NAME', '')  # 기본값은 'f1tenth'
 
     debug_arg = DeclareLaunchArgument(
         name='debug',

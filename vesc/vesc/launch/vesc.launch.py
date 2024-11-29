@@ -20,12 +20,12 @@ def generate_launch_description():
         'vesc_config.yaml'
     )
 
-    # Launch Arguments
-    # config_arg = DeclareLaunchArgument(
-    #     name='config',
-    #     default_value=vesc_config,
-    #     description='VESC yaml configuration file.'
-    # )
+    # 네임스페이스를 환경 변수에서 가져오기
+    car_name = os.getenv('F1TENTH_CAR_NAME', '')  # 기본값은 'f1tenth'
+    ns = 'vesc'
+    if len(car_name) != 0:
+        ns = car_name + '/' + ns
+
     debug_arg = DeclareLaunchArgument(
         name='debug',
         default_value='false',
@@ -39,6 +39,7 @@ def generate_launch_description():
         package='vesc_driver',
         executable='vesc_driver_node',
         name='vesc_driver_node',
+        namespace=ns,  # 네임스페이스 추가
         parameters=[yaml.safe_load(open(vesc_config, 'r'))],
         output='screen'
     )
@@ -48,6 +49,7 @@ def generate_launch_description():
         package='vesc_ackermann',
         executable='ackermann_to_vesc_node',
         name='ackermann_to_vesc_node',
+        namespace=ns,  # 네임스페이스 추가
         output='screen',
         parameters=[yaml.safe_load(open(shared_config, 'r'))],
         prefix=launch_prefix
@@ -58,6 +60,7 @@ def generate_launch_description():
         package='vesc_ackermann',
         executable='vesc_to_odom_node',
         name='vesc_to_odom_node',
+        namespace=ns,  # 네임스페이스 추가
         output='screen',
         parameters=[yaml.safe_load(open(shared_config, 'r')),
                     vesc_odom_config],
@@ -69,6 +72,7 @@ def generate_launch_description():
         package='vesc_ackermann',
         executable='ackermann_manager_node',
         name='ackermann_manager_node',
+        namespace=ns,  # 네임스페이스 추가
         output='screen',
         parameters=[ackermann_manage_config]
     )
