@@ -27,14 +27,23 @@ _GX5_25_PARAMS_FILE = os.path.join(
 )
 
 def generate_launch_description():
-  # car_name = os.getenv('F1TENTH_CAR_NAME', 'f1tenth')  # 기본값은 'f1tenth'
-  nodename = f"gx5_{_PACKAGE_NAME}"
+  car_name = os.getenv('F1TENTH_CAR_NAME', '')
+  frame_id = 'base_link'
+  mount_frame_id = 'gx5_25_link'
+  gx5_namespace = 'gx5'
+
+  print(len(car_name))
+  if len(car_name) != 0:
+    print("work")
+    gx5_namespace = car_name + '/' + gx5_namespace
+    mount_frame_id = mount_frame_id + '_' + car_name
+    frame_id = frame_id + '_' + car_name
+  nodename = f"{_PACKAGE_NAME}"
   # Declare arguments with default values
   launch_description = []
-  # launch_description.append(DeclareLaunchArgument('namespace',   default_value=car_name,                description='Namespace to use when launching the nodes in this launch file'))
+  launch_description.append(DeclareLaunchArgument('namespace',   default_value=gx5_namespace,                description='Namespace to use when launching the nodes in this launch file'))
   launch_description.append(DeclareLaunchArgument('node_name',   default_value=nodename,      description='Name to give the Microstrain Inertial Driver node'))
   launch_description.append(DeclareLaunchArgument('debug',       default_value='false',            description='Whether or not to log debug information.'))
-  # launch_description.append(DeclareLaunchArgument('params_file', default_value=_GX5_25_PARAMS_FILE, description='Path to file that will load additional parameters'))
 
   # Pass an environment variable to the node to determine if it is in debug or not
   launch_description.append(SetEnvironmentVariable('MICROSTRAIN_INERTIAL_DEBUG', value=LaunchConfiguration('debug')))
@@ -47,7 +56,7 @@ def generate_launch_description():
     package    = _PACKAGE_NAME,
     executable = "microstrain_inertial_driver_node",
     name       = LaunchConfiguration('node_name'),
-    # namespace  = LaunchConfiguration('namespace'),
+    namespace  = LaunchConfiguration('namespace'),
     parameters = [
       # Load the default params file manually, since this is a ROS params file, we will need to load the file manually
       yaml.safe_load(open(_DEFAULT_PARAMS_FILE, 'r')),
@@ -55,10 +64,10 @@ def generate_launch_description():
 
       # If you want to override any settings in the params.yml file, make a new yaml file, and set the value via the params_file arg
       # LaunchConfiguration('params_file'),
-      # {
-      #     'frame_id': f'gx5_25_link_{car_name}',  # Append car_name to frame_id
-      #     'mount_frame_id': f'base_link_{car_name}'  # Append car_name to mount_frame_id
-      # },
+      {
+          'frame_id': frame_id,  # Append car_name to frame_id
+          'mount_frame_id': mount_frame_id  # Append car_name to mount_frame_id
+      },
     ]
   )
 
