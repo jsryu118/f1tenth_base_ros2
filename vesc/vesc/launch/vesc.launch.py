@@ -21,10 +21,10 @@ def generate_launch_description():
     )
 
     # 네임스페이스를 환경 변수에서 가져오기
-    car_name = os.getenv('F1TENTH_CAR_NAME', '')  # 기본값은 'f1tenth'
-    ns = 'vesc'
-    if len(car_name) != 0:
-        ns = car_name + '/' + ns
+    car_name = os.getenv('F1TENTH_CAR_NAME', '')  
+    ns = car_name
+    # if len(car_name) != 0:
+    #     ns = car_name + '/' + ns
 
     debug_arg = DeclareLaunchArgument(
         name='debug',
@@ -49,7 +49,6 @@ def generate_launch_description():
         package='vesc_ackermann',
         executable='ackermann_to_vesc_node',
         name='ackermann_to_vesc_node',
-        namespace=ns,  # 네임스페이스 추가
         output='screen',
         parameters=[yaml.safe_load(open(shared_config, 'r'))],
         prefix=launch_prefix

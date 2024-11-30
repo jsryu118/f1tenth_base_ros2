@@ -63,8 +63,8 @@ AckermannToVesc::AckermannToVesc(const rclcpp::NodeOptions & options)
 
 
   // create publishers to vesc electric-RPM (speed) and servo commands
-  erpm_pub_ = create_publisher<Float64>("commands/motor/speed", 10);
-  servo_pub_ = create_publisher<Float64>("commands/servo/position", 10);
+  erpm_pub_ = create_publisher<Float64>("vesc/commands/motor/speed", 10);
+  servo_pub_ = create_publisher<Float64>("vesc/commands/servo/position", 10);
 
   // subscribe to ackermann topic
   ackermann_sub_ = create_subscription<AckermannDriveStamped>(

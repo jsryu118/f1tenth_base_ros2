@@ -78,30 +78,30 @@ VescDriver::VescDriver(const rclcpp::NodeOptions & options)
   }
 
   // create vesc state (telemetry) publisher
-  state_pub_ = create_publisher<VescStateStamped>("sensors/core", rclcpp::QoS{10});
-  imu_pub_ = create_publisher<VescImuStamped>("sensors/imu", rclcpp::QoS{10});
-  imu_std_pub_ = create_publisher<Imu>("sensors/imu/raw", rclcpp::QoS{10});
+  state_pub_ = create_publisher<VescStateStamped>("vesc/sensors/core", rclcpp::QoS{10});
+  imu_pub_ = create_publisher<VescImuStamped>("vesc/sensors/imu", rclcpp::QoS{10});
+  imu_std_pub_ = create_publisher<Imu>("vesc/sensors/imu/raw", rclcpp::QoS{10});
 
   // since vesc state does not include the servo position, publish the commanded
   // servo position as a "sensor"
   servo_sensor_pub_ = create_publisher<Float64>(
-    "sensors/servo_position_command", rclcpp::QoS{10});
+    "vesc/sensors/servo_position_command", rclcpp::QoS{10});
 
   // subscribe to motor and servo command topics
   duty_cycle_sub_ = create_subscription<Float64>(
-    "commands/motor/duty_cycle", rclcpp::QoS{10}, std::bind(
+    "vesc/commands/motor/duty_cycle", rclcpp::QoS{10}, std::bind(
       &VescDriver::dutyCycleCallback, this,
       _1));
   current_sub_ = create_subscription<Float64>(
-    "commands/motor/current", rclcpp::QoS{10}, std::bind(&VescDriver::currentCallback, this, _1));
+    "vesc/commands/motor/current", rclcpp::QoS{10}, std::bind(&VescDriver::currentCallback, this, _1));
   brake_sub_ = create_subscription<Float64>(
-    "commands/motor/brake", rclcpp::QoS{10}, std::bind(&VescDriver::brakeCallback, this, _1));
+    "vesc/commands/motor/brake", rclcpp::QoS{10}, std::bind(&VescDriver::brakeCallback, this, _1));
   speed_sub_ = create_subscription<Float64>(
-    "commands/motor/speed", rclcpp::QoS{10}, std::bind(&VescDriver::speedCallback, this, _1));
+    "vesc/commands/motor/speed", rclcpp::QoS{10}, std::bind(&VescDriver::speedCallback, this, _1));
   position_sub_ = create_subscription<Float64>(
-    "commands/motor/position", rclcpp::QoS{10}, std::bind(&VescDriver::positionCallback, this, _1));
+    "vesc/commands/motor/position", rclcpp::QoS{10}, std::bind(&VescDriver::positionCallback, this, _1));
   servo_sub_ = create_subscription<Float64>(
-    "commands/servo/position", rclcpp::QoS{10}, std::bind(&VescDriver::servoCallback, this, _1));
+    "vesc/commands/servo/position", rclcpp::QoS{10}, std::bind(&VescDriver::servoCallback, this, _1));
 
   // create a 50Hz timer, used for state machine & polling VESC telemetry
   timer_ = create_wall_timer(20ms, std::bind(&VescDriver::timerCallback, this));

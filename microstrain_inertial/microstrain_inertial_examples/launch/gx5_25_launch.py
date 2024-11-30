@@ -28,13 +28,11 @@ _GX5_25_PARAMS_FILE = os.path.join(
 
 def generate_launch_description():
   car_name = os.getenv('F1TENTH_CAR_NAME', '')
-  frame_id = 'base_link'
-  mount_frame_id = 'gx5_25_link'
+  frame_id = 'gx5_25_link'
+  mount_frame_id = 'base_link'
   gx5_namespace = 'gx5'
 
-  print(len(car_name))
   if len(car_name) != 0:
-    print("work")
     gx5_namespace = car_name + '/' + gx5_namespace
     mount_frame_id = mount_frame_id + '_' + car_name
     frame_id = frame_id + '_' + car_name

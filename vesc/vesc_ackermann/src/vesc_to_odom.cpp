@@ -85,7 +85,7 @@ VescToOdom::VescToOdom(const rclcpp::NodeOptions & options)
   this->get_parameter("publish_tf", publish_tf_);
 
   // create odom publisher
-  odom_pub_ = create_publisher<Odometry>("odom", 10);
+  odom_pub_ = create_publisher<Odometry>("vesc/odom", 10);
 
   // create tf broadcaster
   if (publish_tf_) {
@@ -94,11 +94,11 @@ VescToOdom::VescToOdom(const rclcpp::NodeOptions & options)
 
   // subscribe to vesc state and. optionally, servo command
   vesc_state_sub_ = create_subscription<VescStateStamped>(
-    "sensors/core", 10, std::bind(&VescToOdom::vescStateCallback, this, _1));
+    "vesc/sensors/core", 10, std::bind(&VescToOdom::vescStateCallback, this, _1));
 
   if (use_servo_cmd_) {
     servo_sub_ = create_subscription<Float64>(
-      "sensors/servo_position_command", 10, std::bind(&VescToOdom::servoCmdCallback, this, _1));
+      "vesc/sensors/servo_position_command", 10, std::bind(&VescToOdom::servoCmdCallback, this, _1));
   }
 }
 

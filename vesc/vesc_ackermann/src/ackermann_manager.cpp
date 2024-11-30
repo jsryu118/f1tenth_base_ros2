@@ -36,7 +36,7 @@ void AckermannManager::initialize_parameters()
 void AckermannManager::setup_subscriptions()
 {
     joy_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
-        "/joy", 10, std::bind(&AckermannManager::joy_callback, this, std::placeholders::_1));
+        "joy", 10, std::bind(&AckermannManager::joy_callback, this, std::placeholders::_1));
 
     ackermann_main_sub_ = this->create_subscription<ackermann_msgs::msg::AckermannDriveStamped>(
         "ackermann_cmd_main", 10, std::bind(&AckermannManager::ackermann_main_callback, this, std::placeholders::_1));
@@ -71,15 +71,19 @@ void AckermannManager::joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg)
     else if (msg->buttons[2] && init_ackermann_x_) current_mode_ = Mode::X;
     else if (msg->buttons[3] && init_ackermann_y_) current_mode_ = Mode::Y;
 
-    if (current_mode_ == Mode::JOY && msg->buttons[4]) {
+    if (current_mode_ == Mode::JOY){
         auto ackermann_msg = ackermann_msgs::msg::AckermannDriveStamped();
         ackermann_msg.header.stamp = this->now();
-
-        double speed = max_speed_ * msg->axes[1];
-        double steering_angle = max_steering_angle_ * msg->axes[3];
-
-        ackermann_msg.drive.speed = speed;
-        ackermann_msg.drive.steering_angle = steering_angle;
+        if(msg->buttons[4]) {
+            double speed = max_speed_ * msg->axes[1];
+            double steering_angle = max_steering_angle_ * msg->axes[3];
+            ackermann_msg.drive.speed = speed;
+            ackermann_msg.drive.steering_angle = steering_angle;
+        }
+        else{
+            ackermann_msg.drive.speed = 0;
+            ackermann_msg.drive.steering_angle = 0;
+        }
         ackermann_pub_->publish(ackermann_msg);
     }
 }
